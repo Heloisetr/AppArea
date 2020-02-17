@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react'
 import { StyleSheet, Text, View, ImageBackground, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
-
+import { createStackNavigator} from 'react-navigation-stack';
 
 import bgImg from '../assets/bgimg.jpg'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -8,7 +8,8 @@ import logo from '../assets/area_title.png'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function LoginPage() {
+export default class AuthPage extends Component {
+  render() {
   return (
     <ImageBackground source={bgImg} style={styles.bgContainer}>
       <View style={styles.logoContainer}>
@@ -19,7 +20,7 @@ export default function LoginPage() {
           style={styles.inputIcon} />
         <TextInput
           style={styles.input}
-          placeholder={'UserName'}
+          placeholder={'Email'}
           placeholderTextColor={'white'}
           underLineColorAndroid='tranparent'
         />
@@ -33,19 +34,23 @@ export default function LoginPage() {
           placeholderTextColor={'white'}
           underLineColorAndroid='tranparent'
         />
-        <TouchableOpacity style={styles.btnEye}>
-          <Icon name={'ios-eye'} size={26} color={'rgba(255, 255, 255, 0.7)'}
-          />
-        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.btnLogin}>
-        <Text style={styles.text}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnRegister}>
-        <Text style={styles.text}>Register</Text>
+      <View style={styles.inputContainer}>
+        <Icon name={'ios-lock'} size={28} color={'rgba(255, 255, 255, 0.7)'}
+          style={styles.inputIcon} />
+        <TextInput
+          style={styles.input}
+          placeholder={'Confirm your Password'}
+          placeholderTextColor={'white'}
+          underLineColorAndroid='tranparent'
+        />
+      </View>
+      <TouchableOpacity style={styles.btnLogin} onPress= {() => this.props.navigation.navigate('Home')}>
+        <Text style={styles.text}>Sign Up</Text>
       </TouchableOpacity>
     </ImageBackground>
   );
+  }
 }
 
 const styles = StyleSheet.create({

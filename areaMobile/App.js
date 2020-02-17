@@ -1,19 +1,67 @@
-import React from 'react';
-import { StyleSheet, View} from 'react-native';
-import LoginPage from './Scenes/loginPage';
+import React, {Component} from 'react';
+import { StyleSheet, View, Text} from 'react-native';
+import { createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer} from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function App() {  
-  return (
-    <View style={styles.container}>
-      <LoginPage></LoginPage>
-    </View>
-  );
-}
+import LoginPage from './Scenes/LoginPage';
+import AuthPage from './Scenes/AuthPage';
+import HomePage from './Scenes/HomePage';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+import { HomeScreen, ProfileScreen, CredScreen } from './Components/Screens';
+
+const NavStackNavigator = createBottomTabNavigator (
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+      }
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+      }
+    },
+    Credits: {
+      screen: CredScreen,
+      navigationOptions: {
+        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+      }
+    }
   },
-});
+  {
+    tabBarOptions: {
+      showLabel: true
+    }
+  }
+);
+
+const AppStackNavigator = createStackNavigator (
+  {
+    Login: {
+      screen: LoginPage,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    Register: {
+      screen: AuthPage,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    NavStackNavigator: {
+      screen: NavStackNavigator,
+      navigationOptions: {
+        headerShown: false
+      }
+    }
+  }
+);
+
+const App =  createAppContainer(AppStackNavigator);
+
+export default App;
