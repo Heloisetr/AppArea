@@ -1,59 +1,24 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, ImageBackground, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import Weather from '../Components/Weather'
+import NYTImes from '../Components/NYTimes';
 
 export default class HomePage extends Component
 {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            dataSource: null,
-        }
-    }
-
-    componentDidMount () {
-
-        return fetch('https://api.openweathermap.org/data/2.5/find?q=Bordeaux&units=imperial&appid=f92c1f4990b0574d4a4e4d3dd556f388')
-            .then ((response) => response.json())
-            .then ((responseJson) => {
-                this.setState({
-                    isLoading: false,
-                    dataSource: responseJson.list[0],
-                })
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-
-    }
-
-    render() {
-
-        if (this.state.isLoading) {
-            return (
-                <View>
-                    <Text>Loading</Text>
-                </View>
-            )
-        } else {
-            let temp = this.state.dataSource.main.temp;
-            let humidity = this.state.dataSource.main.humidity;
-            /*let movies = this.state.dataSource.map((val, key) => {
-                return (
-                    <View key={key}>
-                        <Text>{val.main.temp}</Text>
-                    </View>
-                )
-            })*/
-
+    render()  {
         return (
-            <View>
+            <View style={styles.HomePage}>
                 <Text>Homepage</Text>
-                <Text>{temp}</Text>
-                <Text>{humidity}</Text>
-            </View>
-        )
-    }
+                <NYTImes/>
+                </View>
+        )   
     }
 }
 
+const styles = StyleSheet.create({
+    HomePage: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+});
