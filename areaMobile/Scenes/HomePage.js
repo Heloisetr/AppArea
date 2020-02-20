@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Weather from '../Components/Weather'
 import NYTImes from '../Components/NYTimes';
+import Exchange from '../Components/Exchange';
+import Sport from '../Components/Sport';
 
 export default class HomePage extends Component
 {
@@ -9,8 +11,8 @@ export default class HomePage extends Component
         return (
             <View style={styles.HomePage}>
                 <Text>Homepage</Text>
-                <NYTImes/>
-                </View>
+                <Sport />
+            </View>
         )   
     }
 }
