@@ -15,14 +15,15 @@ export default class Sport extends Component
 
     componentDidMount () {
          axios({
-            "method":"GET",
-            "url":"https://api-football-beta.p.rapidapi.com/leagues",
-            "headers":{
-            "content-type":"application/octet-stream",
-            "x-rapidapi-host":"api-football-beta.p.rapidapi.com",
-            "x-rapidapi-key":"be8efd67acmsh34a9d536f06d340p19d480jsn56edaddd89f4"
-            },"params":{
-            "id":"61"
+            method: 'GET',
+            url:"https://api-football-beta.p.rapidapi.com/leagues",
+            headers:{
+               "content-type":"application/octet-stream",
+               "x-rapidapi-host":"api-football-beta.p.rapidapi.com",
+               "x-rapidapi-key":"be8efd67acmsh34a9d536f06d340p19d480jsn56edaddd89f4"
+            },
+            params:{
+                "id":"61"
             }
             })
             .then((response)=>{

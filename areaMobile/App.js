@@ -9,32 +9,43 @@ import LoginPage from './Scenes/LoginPage';
 import AuthPage from './Scenes/AuthPage';
 import HomePage from './Scenes/HomePage';
 
-import { HomeScreen, ProfileScreen, CredScreen } from './Components/Screens';
+import { HomeScreen, ProfileScreen, FAQScreen, ServicesScreen } from './Components/Screens';
 
 const NavStackNavigator = createBottomTabNavigator (
   {
     Home: {
       screen: HomeScreen,
       navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+        tabBarIcon: () => <FontAwesome5 name="tachometer-alt" size={24} color="#CDCCCE" />
       }
     },
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+        tabBarIcon: () => <FontAwesome5 name="user-alt" size={24} color="#CDCCCE" />
       }
     },
-    Credits: {
-      screen: CredScreen,
+    Services: {
+      screen: ServicesScreen,
       navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />
+        tabBarIcon: () => <FontAwesome5 name="server" size={24} color="#CDCCCE" />
+      }
+    },
+    FAQ: {
+      screen: FAQScreen,
+      navigationOptions: {
+        tabBarIcon: () => <FontAwesome5 name="question-circle" size={24} color="#CDCCCE" />
       }
     }
   },
   {
     tabBarOptions: {
-      showLabel: true
+      showLabel: true,
+      activeTintColor: '#00beb5',
+      inactiveTintColor: '#ffffff',
+      style: {
+        backgroundColor: '#1c1c1c',
+      },
     }
   }
 );

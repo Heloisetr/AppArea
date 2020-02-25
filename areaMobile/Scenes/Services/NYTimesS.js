@@ -1,20 +1,12 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Weather from '../Components/Weather'
-import NYTImes from '../Components/NYTimes';
-import Exchange from '../Components/Exchange';
-import Sport from '../Components/Sport';
-import Services from '../Components/Services/Services';
 
 export default class HomePage extends Component
 {
     render()  {
         return (
             <View style={styles.HomePage}>
-                <Text>Homepage</Text>
-                <Services name="METEO" />
-                <Services name="METEO" />
-                <Services name="METEO" />
+                <Text>NYTIMES SCENE</Text>
             </View>
         )   
     }
