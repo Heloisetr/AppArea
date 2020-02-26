@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API } from './Config.js';
+import { API } from './Config_old.js/index.js';
 import { AsyncStorage } from 'react-native'
 
 
