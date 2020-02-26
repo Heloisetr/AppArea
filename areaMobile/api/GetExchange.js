@@ -20,7 +20,7 @@ async function getDayExchange(base, day) {
     try {
         const result = await axios({
             method: 'get',
-            url: `${EXCHANGE}/${day}`,
+            url: `${EXCHANGE}/${day}?base=${base}`,
         });
         if (result.status === 200) {
             return result

@@ -6,4 +6,4 @@ export const WEATHER_KEY = 'de8dce971d35c3ef0c54c170ed54d90c';
 export const NYT = 'https://api.nytimes.com/svc';
 export const NYT_KEY = 'I2yukrGz3wLn0C1VAyS2OukUAmydOy3q';
 
-export const EXCHANGE = 'https://api.exchangeratesapi.io/';
+export const EXCHANGE = 'https://api.exchangeratesapi.io';
