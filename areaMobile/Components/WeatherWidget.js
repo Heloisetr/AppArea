@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight} from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import {getWeather} from '../api/GetWeather';
+import { getWidgets } from '../api/GetWidget';
+import {deleteWidget} from '../api/DelWidget';
 
 export default class Weather extends Component
 {
@@ -9,7 +12,14 @@ export default class Weather extends Component
         this.state = {
             isLoading: true,
             dataSource: null,
+            service: 'meteo',
         }
+    }
+
+    async deleteWidget(widget_name) {
+        let response = await deleteWidget(this.state.service, widget_name);
+
+        return (response);
     }
 
     async setWeatherData(name)
@@ -19,12 +29,13 @@ export default class Weather extends Component
     } 
 
     async componentDidMount() {
-        let response = await this.setWeatherData('Bordeaux');
+        let response = await this.setWeatherData(this.props.name);
         this.setState({
             dataSource: response,
             isLoading: false,
         })
-        console.log(this.state.dataSource);
+        let result = await getWidgets('meteo');
+        //console.log(this.state.dataSource);
         return 0
     }
 
@@ -71,15 +82,20 @@ export default class Weather extends Component
            
             return (
                 <View style={styles.Weather}>
-                    <Text>{mainTemp}°C</Text>
-                    <Text>{tempMin}°C</Text>
-                    <Text>{tempMax}°C</Text>
-                    <Text>{feelsLike}°C</Text>
-                    <Text>{humidity} % of humidity</Text>
-                    <Text>{wind} % of humidity</Text>
-                    <Text>{sunrise}</Text>
-                    <Text>{sunset}</Text>
-                    <Text>{weather}</Text>
+                    <TouchableHighlight onPress={this.deleteWidget.bind(this, this.props.name)}>
+                        <Card containerStyle={{backgroundColor: 'rgb(28, 28, 28)'}}
+                            title={this.props.name}
+                            titleStyle={{color: 'rgb(255, 255, 255)'}}>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>{weather}</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>{mainTemp}°C{"\n"}</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>Min  Feels  Max </Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>{tempMin}°C  {feelsLike}°C  {tempMax}°C{"\n"}</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>Humidity {humidity}%</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>Wind {wind}km/h{"\n"}</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>Sunrise{"\n"}{sunrise}{"\n"}</Text>
+                            <Text style={{textAlign: "center", color: 'rgb(255, 255, 255)'}}>Sunset{"\n"}{sunset}</Text>
+                        </Card>
+                    </TouchableHighlight>
                 </View>
             )
         }
@@ -93,5 +109,6 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      color: '#ffffff',
     }
 });

@@ -1,30 +1,38 @@
 import axios from 'axios';
 import { API } from './Config.js';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native'
 
+async function postWidget(service, widget, desc) {
 
-async function getWidgets(serviceName) {
-    try {
-      const result = await axios({
-        method: 'get',
-        url: `${API}/widgets/${serviceName}`,
-        data: {
-          name: serviceName,
-        },
-        headers: {
-          Authorization: 'Bearer ' + AsyncStorage.getItem('token')
+  let description = '';
+
+  if (desc !== undefined) {
+    description = desc;
+  }
+  
+  try {
+    const result = await axios({
+      method: 'post',
+      url: `${API}/widgets/${service}/${widget.toLowerCase()}`,
+      data: {
+        params: {
+          description: description
         }
-      });
-
-      // console.log('getWidgets: \n', result);
-
-      if (result.status === 200) {
-          return result
+      },
+      headers: {
+        Authorization: 'Bearer ' + await AsyncStorage.getItem('token')
       }
-    } catch (error) {
-        console.log(error);
+    });
+
+      // console.log('[postWidget] \n', result);
+
+    if (result.status === 200) {
+        return result
     }
-    return undefined;
+  } catch (error) {
+      console.log(error);
+  }
+  return undefined;
 }
 
-export { getWidgets }
+export { postWidget }

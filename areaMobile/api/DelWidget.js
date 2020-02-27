@@ -1,23 +1,18 @@
 import axios from 'axios';
 import { API } from './Config.js';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native'
 
 
-async function getWidgets(serviceName) {
+async function deleteWidget(serviceName, widgetName) {
     try {
       const result = await axios({
-        method: 'get',
-        url: `${API}/widgets/${serviceName}`,
-        data: {
-          name: serviceName,
-        },
+        method: 'delete',
+        url: `${API}/widgets/${serviceName}/${widgetName}`,
         headers: {
           Authorization: 'Bearer ' + await AsyncStorage.getItem('token')
         }
       });
-
       if (result.status === 200) {
-     //   console.log(result);
           return result
       }
     } catch (error) {
@@ -26,4 +21,4 @@ async function getWidgets(serviceName) {
     return undefined;
 }
 
-export { getWidgets }
+export { deleteWidget }
