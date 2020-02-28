@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API } from './Config.js';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 
 
 async function getWidgets(serviceName) {
@@ -8,20 +8,15 @@ async function getWidgets(serviceName) {
       const result = await axios({
         method: 'get',
         url: `${API}/widgets/${serviceName}`,
-        data: {
-          name: serviceName,
-        },
         headers: {
           Authorization: 'Bearer ' + await AsyncStorage.getItem('token')
         }
       });
-
       if (result.status === 200) {
-     //   console.log(result);
           return result
       }
     } catch (error) {
-        console.log(error);
+        console.log("TEST");
     }
     return undefined;
 }

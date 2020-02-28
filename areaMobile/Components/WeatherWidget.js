@@ -34,7 +34,6 @@ export default class Weather extends Component
             dataSource: response,
             isLoading: false,
         })
-        let result = await getWidgets('meteo');
         //console.log(this.state.dataSource);
         return 0
     }
