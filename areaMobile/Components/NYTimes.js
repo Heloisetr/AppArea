@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import { getMostPopularNYTEmailed, getMostPopularNYTViewed, getTopStoriesNYT, getSearchNYT, getBookNYT } from '../api/GetNYTimes';
 
-export default class NYTImes extends Component
+export default class NYTimes extends Component
 {
     constructor(props) {
         super(props);
@@ -11,18 +12,87 @@ export default class NYTImes extends Component
         }
     }
 
-    componentDidMount() {
-        return fetch('https://api.nytimes.com/svc/search/v2/articlesearch.json?q=korea&api-key=Np6dBGDV09g8a82j0DVBR4gTFPqRC5HO')
-        .then((response) => response.json())
-        .then ((responseJson) => {
+    async setMostPopularNYTEmailed(date)
+    {
+        let res = await getMostPopularNYTEmailed(date);
+      //  console.log(res.data.results[0]);
+        return (res.data.results[0])
+    }
+
+    async setMostPopularNYTViewed(date)
+    {
+        let res = await getMostPopularNYTViewed(date);
+        console.log(res.data.results[0]);
+        return (res.data.results[0])
+    }
+
+    async setTopStoriesNYT(article)
+    {
+        let res = await getTopStoriesNYT(article);
+        console.log(res);
+        return (res.data.results[0])
+    }
+
+    async setSearchNYT(article)
+    {
+        let res = await getSearchNYT(article);
+        console.log(res.data.response.docs[0]);
+        return (res.data.response.docs[0])
+    }
+
+    async setBookNYT(author)
+    {
+        let res = await getBookNYT(author);
+        console.log(res.data.results[0]);
+        return (res.data.results[0])
+    }
+
+    async componentDidMount() {
+        if (this.props.name == 'MostPopularEmailed')
+        {
+            let response = await this.setMostPopularNYTEmailed('1');
             this.setState({
+                dataSource: response,
                 isLoading: false,
-                dataSource: responseJson.response.docs,
             })
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+            return 0
+        }
+        else if (this.props.name == 'MostPopularViewed')
+        {
+            let response = await this.setMostPopularNYTViewed('1');
+            this.setState({
+                dataSource: response,
+                isLoading: false,
+            })
+            return 0
+        }
+        else if (this.props.name == 'TopStories')
+        {
+            let response = await this.setTopStoriesNYT('world');
+            this.setState({
+                dataSource: response,
+                isLoading: false,
+            })
+            return 0
+        }
+        else if (this.props.name == 'Search')
+        {
+            let response = await this.setSearchNYT('Coronavirus');
+            this.setState({
+                dataSource: response,
+                isLoading: false,
+            })
+            return 0
+        }
+        else if (this.props.name == 'Book')
+        {
+            let response = await this.setBookNYT('Stephen+King');
+            this.setState({
+                dataSource: response,
+                isLoading: false,
+            })
+            return 0
+        }
     }
 
     render() {
@@ -33,18 +103,80 @@ export default class NYTImes extends Component
                 </View>
             )
         } else {
-            let article = this.state.dataSource.map((val, key) => {
+            if (this.props.name == 'MostPopularEmailed')
+            {
+                let title = this.state.dataSource.title;
+                let published_date = this.state.dataSource.published_date;
+                let url = this.state.dataSource.url;
+                
                 return (
-                    <View key={key} style={styles.Item}>
-                        <Text>{val.headline.main}</Text>
+                    <View style={styles.NYTimes}>
+                        <Text>{title}</Text>
+                        <Text>{published_date}</Text>
+                        <Text>{url}</Text>
                     </View>
                 )
-            }) 
-            return (
-                <View style={styles.NYTimes}>
-                    {article}
-                </View>
-            )
+            }
+            else if (this.props.name == 'MostPopularViewed')
+            {
+                let title = this.state.dataSource.title;
+                let published_date = this.state.dataSource.published_date;
+                let url = this.state.dataSource.url;
+                
+                return (
+                    <View style={styles.NYTimes}>
+                        <Text>{title}</Text>
+                        <Text>{published_date}</Text>
+                        <Text>{url}</Text>
+                    </View>
+                )
+            }
+            else if (this.props.name == 'TopStories')
+            {
+                let title = this.state.dataSource.title;
+                let published_date = this.state.dataSource.published_date;
+                let url = this.state.dataSource.url;
+                
+                return (
+                    <View style={styles.NYTimes}>
+                        <Text>{title}</Text>
+                        <Text>{published_date}</Text>
+                        <Text>{url}</Text>
+                    </View>
+                )
+            }
+            else if (this.props.name == 'Search')
+            {
+                let headline = this.state.dataSource.headline.main;
+                let snippet = this.state.dataSource.snippet;
+                let published_date = this.state.dataSource.pub_date;
+                let url = this.state.dataSource.web_url;
+                
+                return (
+                    <View style={styles.NYTimes}>
+                        <Text>{headline}</Text>
+                        <Text>{snippet}</Text>
+                        <Text>{published_date}</Text>
+                        <Text>{url}</Text>
+                    </View>
+                )
+            }
+            else if (this.props.name == 'Book')
+            {
+                let book_title = this.state.dataSource.book_title;
+                let book_author = this.state.dataSource.book_author;
+                let published_date = this.state.dataSource.publication_dt;
+                let url = this.state.dataSource.url;
+                
+                return (
+                    <View style={styles.NYTimes}>
+                        <Text>{book_title}</Text>
+                        <Text>{book_author}</Text>
+                        <Text>{published_date}</Text>
+                        <Text>{url}</Text>
+                    </View>
+                )
+            }
         }
     }
 }
@@ -54,13 +186,5 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    Item: {
-        flex: 1,
-        alignSelf: 'stretch',
-        margin: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: 1
     }
 });
