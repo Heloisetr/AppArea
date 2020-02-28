@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default class NYTimesS extends Component
+export default class SportS extends Component
 {
     render()  {
         return (
             <View style={styles.HomePage}>
-                <Text>NYTIMES SCENE</Text>
+                <Text>Sport SCENE</Text>
             </View>
         )   
     }

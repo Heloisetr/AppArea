@@ -7,9 +7,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import LoginPage from './Scenes/LoginPage';
 import AuthPage from './Scenes/AuthPage';
-import HomePage from './Scenes/HomePage';
+import AllServices from './Scenes/AllServices';
 
-import { HomeScreen, ProfileScreen, FAQScreen, ServicesScreen } from './Components/Screens';
+import { HomeScreen, ProfileScreen, FAQScreen, ServicesScreen, WeatherScreen,
+         ExchangeScreen, NYTimesScreen, SportScreen, BourseScreen } from './Components/Screens';
 
 const NavStackNavigator = createBottomTabNavigator (
   {
@@ -24,9 +25,15 @@ const NavStackNavigator = createBottomTabNavigator (
       navigationOptions: {
         tabBarIcon: () => <FontAwesome5 name="user-alt" size={24} color="#CDCCCE" />
       }
-    },
+    },/*
     Services: {
       screen: ServicesScreen,
+      navigationOptions: {
+        tabBarIcon: () => <FontAwesome5 name="server" size={24} color="#CDCCCE" />
+      }
+    },*/
+    AllServices: {
+      screen: AllServices,
       navigationOptions: {
         tabBarIcon: () => <FontAwesome5 name="server" size={24} color="#CDCCCE" />
       }
@@ -62,6 +69,42 @@ const AppStackNavigator = createStackNavigator (
       screen: AuthPage,
       navigationOptions: {
         headerShown: false
+      }
+    },
+    Services: {
+      screen: ServicesScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    Meteo: {
+      screen: WeatherScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    Exchange: {
+      screen: ExchangeScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    NYTimes: {
+      screen: NYTimesScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    Sport: {
+      screen: SportScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    Bourse: {
+      screen: BourseScreen,
+      navigationOptions: {
+        headerShown: true
       }
     },
     NavStackNavigator: {

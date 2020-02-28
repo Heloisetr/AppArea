@@ -1,22 +1,26 @@
 import React, {Component} from 'react';
-import { View, StatusBar, StyleSheet, Text } from 'react-native';
+import { View, StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SwipeButtonsContainer } from 'react-native-swipe-item';
 import { Avatar } from 'react-native-elements';
 
-export default class ServicesStock extends Component
+export default class ServiceBtn extends Component
 {
     render() {
         return (
-            <View style={styles.serviceCard}>
-                <Avatar
-                    size="small"
-                    rounded
-                    icon={{name: 'user', type: 'font-awesome'}}
-                    onPress={() => console.log("Works!")}
-                    activeOpacity={0.7}
-                    containerStyle={{flex: 1, marginLeft: 8, marginTop: 50, height: 10}}
-                />
-                <Text>{this.props.name}</Text>
-            </View>
+            <SwipeButtonsContainer
+              style={{
+                alignSelf: 'center',
+                aspectRatio: 1,
+                flexDirection: 'column',
+                padding: 10,
+              }}
+            >
+                <TouchableOpacity
+                  onPress={() => console.log('left button clicked ' + this.props.name)}
+                >
+                  <Text>Click Me</Text>
+                </TouchableOpacity>
+            </SwipeButtonsContainer>
         )
     }
 }

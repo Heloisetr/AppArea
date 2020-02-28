@@ -51,7 +51,6 @@ export default class WeatherS extends Component
         if (response !== undefined) {
             this.setState({
                 widgets: response.data,
-                widget_nbr: response.data.length,
             })
             //console.log(response);
         }
