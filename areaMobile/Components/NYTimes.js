@@ -36,14 +36,14 @@ export default class NYTimes extends Component
     async setSearchNYT(article)
     {
         let res = await getSearchNYT(article);
-        console.log(res.data.response.docs[0]);
+        
         return (res.data.response.docs[0])
     }
 
     async setBookNYT(author)
     {
         let res = await getBookNYT(author);
-        console.log(res.data.results[0]);
+        
         return (res.data.results[0])
     }
 
