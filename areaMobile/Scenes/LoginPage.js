@@ -41,7 +41,7 @@ export default class LoginPage extends Component {
             style={styles.inputIcon} />
           <TextInput
             style={styles.input}
-            placeholder={'UserName'}
+            placeholder={'Email'}
             placeholderTextColor={'white'}
             underLineColorAndroid='tranparent'
             ref= {(el) => { this.username = el; }}

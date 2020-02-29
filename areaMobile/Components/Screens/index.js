@@ -9,10 +9,11 @@ import ExchangeS from '../../Scenes/Services/ExchangeS';
 import NYTimesS from '../../Scenes/Services/NYTimesS';
 import SportS from '../../Scenes/Services/SportS';
 import BourseS from '../../Scenes/Services/BourseS';
+import FAQ from '../../Scenes/FAQ';
 
 export const ProfileScreen = () => <ProfilePage />;
 export const HomeScreen = () => <HomePage />;
-export const FAQScreen = () => <WeatherS />;
+export const FAQScreen = () => <FAQ />;
 export const ServicesScreen = () => <AllServices />;
 
 export const WeatherScreen = () => <WeatherS />;

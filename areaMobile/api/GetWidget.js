@@ -16,7 +16,7 @@ async function getWidgets(serviceName) {
           return result
       }
     } catch (error) {
-        console.log("TEST");
+        console.log(error);
     }
     return undefined;
 }

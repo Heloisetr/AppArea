@@ -7,7 +7,8 @@ import { StyleSheet,
     TextInput,
 Dimensions } from 'react-native';
 import { getCurrentUser } from '../api/GetCurrentUser';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import { putUser } from '../api/PutUser';
 
 
 const { width: WIDTH } = Dimensions.get('window')
@@ -19,7 +20,31 @@ export default class ProfilePage extends Component
         this.state = {
             isLoading: true,
             dataSource: null,
+            new_user: '',
+            new_pass: '',
+            refresh: 1
         }
+    }
+
+    async forceRefresh () {
+      this.setState({
+          refresh: this.state.refresh + 1,
+          isLoading: true,
+          new_user: '',
+          new_pass: '',
+      })
+      let response = await getCurrentUser();
+      this.setState({
+          dataSource: response,
+          isLoading: false,
+      })
+      return response;
+    }
+
+    async updateUser() {
+      //let response = await putUser(this.state.new_user);
+      this.forceRefresh();
+      //return (response);
     }
 
     async setProfileData() {
@@ -33,7 +58,7 @@ export default class ProfilePage extends Component
             dataSource: response,
             isLoading: false,
         })
-        console.log(this.state.dataSource);
+        //console.log(this.state.dataSource);
         return 0
     }
 
@@ -64,6 +89,9 @@ export default class ProfilePage extends Component
                                 placeholder={'New UserName'}
                                 placeholderTextColor={'white'}
                                 underLineColorAndroid='tranparent'
+                                ref= {(el) => { this.name = el; }}
+                                  onChangeText={(name) => this.setState({new_user: name})}
+                                  value={this.state.new_user}
                                 />
                         </View>
                         <View style={styles.inputContainer}>
@@ -74,9 +102,12 @@ export default class ProfilePage extends Component
                                 placeholder={'New Password'}
                                 placeholderTextColor={'white'}
                                 underLineColorAndroid='tranparent'
+                                ref= {(el) => { this.pass = el; }}
+                                  onChangeText={(pass) => this.setState({new_pass: pass})}
+                                  value={this.state.new_pass}
                                 />
                         </View>
-                        <TouchableOpacity style={styles.btnLogin}>
+                        <TouchableOpacity style={styles.btnLogin} onPress={this.updateUser.bind(this)}>
                             <Text style={styles.text}>Update</Text>
                         </TouchableOpacity>
                     </View>
