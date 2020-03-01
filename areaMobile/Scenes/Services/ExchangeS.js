@@ -90,13 +90,13 @@ export default class ExchangeS extends Component
     render()  {
         if (this.state.isLoading) {
             return (
-                <View style={styles.Weather}>
+                <View style={styles.HomePage}>
                     <Text>Loading</Text>            
                 </View>
             )
         } else {
             return (
-                <View style={styles.HomePage}>
+                <View style={styles.HomePage} key={this.state.refresh}>
                     <View style={styles.container}>
                         {this.state.dataSource.data.map((widget, index) => {
                             return (
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     HomePage: {
       flex: 1,
       alignItems: 'center',
+      backgroundColor: "#303030",
     },
     container: {
         flex: 4,

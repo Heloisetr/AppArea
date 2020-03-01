@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight, Linking} from 'react-native';
+import {Card} from 'react-native-elements';
 import { getMostPopularNYTEmailed, getMostPopularNYTViewed, getTopStoriesNYT, getSearchNYT, getBookNYT } from '../api/GetNYTimes';
+
+import {deleteWidget} from '../api/DelWidget';
 
 export default class NYTimes extends Component
 {
@@ -9,7 +12,14 @@ export default class NYTimes extends Component
         this.state = {
             isLoading: true,
             dataSource: null,
+            service: 'new_york_times',
         }
+    }
+
+    async deleteWidget(widget_name) {
+        console.log (widget_name);
+        let response = await deleteWidget(this.state.service, widget_name);
+        return (response);
     }
 
     async setMostPopularNYTEmailed(date)
@@ -22,14 +32,14 @@ export default class NYTimes extends Component
     async setMostPopularNYTViewed(date)
     {
         let res = await getMostPopularNYTViewed(date);
-        console.log(res.data.results[0]);
+        //console.log(res.data.results[0]);
         return (res.data.results[0])
     }
 
     async setTopStoriesNYT(article)
     {
         let res = await getTopStoriesNYT(article);
-        console.log(res);
+        //console.log(res);
         return (res.data.results[0])
     }
 
@@ -50,7 +60,7 @@ export default class NYTimes extends Component
     async componentDidMount() {
         if (this.props.name == 'MostPopularEmailed')
         {
-            let response = await this.setMostPopularNYTEmailed('1');
+            let response = await this.setMostPopularNYTEmailed(this.props.search);
             this.setState({
                 dataSource: response,
                 isLoading: false,
@@ -59,7 +69,7 @@ export default class NYTimes extends Component
         }
         else if (this.props.name == 'MostPopularViewed')
         {
-            let response = await this.setMostPopularNYTViewed('1');
+            let response = await this.setMostPopularNYTViewed(this.props.search);
             this.setState({
                 dataSource: response,
                 isLoading: false,
@@ -68,7 +78,7 @@ export default class NYTimes extends Component
         }
         else if (this.props.name == 'TopStories')
         {
-            let response = await this.setTopStoriesNYT('world');
+            let response = await this.setTopStoriesNYT(this.props.search);
             this.setState({
                 dataSource: response,
                 isLoading: false,
@@ -77,7 +87,7 @@ export default class NYTimes extends Component
         }
         else if (this.props.name == 'Search')
         {
-            let response = await this.setSearchNYT('Coronavirus');
+            let response = await this.setSearchNYT(this.props.search);
             this.setState({
                 dataSource: response,
                 isLoading: false,
@@ -86,7 +96,7 @@ export default class NYTimes extends Component
         }
         else if (this.props.name == 'Book')
         {
-            let response = await this.setBookNYT('Stephen+King');
+            let response = await this.setBookNYT(this.props.search);
             this.setState({
                 dataSource: response,
                 isLoading: false,
@@ -99,7 +109,9 @@ export default class NYTimes extends Component
         if (this.state.isLoading) {
             return (
                 <View>
-                    <Text>Loading</Text>
+                    <TouchableHighlight onPress={this.deleteWidget.bind(this, this.props.search)}>
+                        <Text>Loading</Text>
+                    </TouchableHighlight>
                 </View>
             )
         } else {
@@ -111,9 +123,16 @@ export default class NYTimes extends Component
                 
                 return (
                     <View style={styles.NYTimes}>
-                        <Text>{title}</Text>
-                        <Text>{published_date}</Text>
-                        <Text>{url}</Text>
+                        <TouchableHighlight onPress={this.deleteWidget.bind(this, this.props.search)}>
+                            <Card containerStyle={{backgroundColor: 'rgb(28, 28, 28)'}}
+                                title="Most Popular Emailed"
+                                titleStyle={{color: 'rgb(255, 255, 255)'}}>
+                                <Text style={styles.Content}>From {this.props.search} days{'\n'}</Text>
+                                <Text style={styles.Content}>{title}</Text>
+                                <Text style={styles.Content}>{published_date}</Text>
+                                <Text style={styles.Content}>{url}</Text>
+                            </Card>
+                        </TouchableHighlight>
                     </View>
                 )
             }
@@ -125,9 +144,16 @@ export default class NYTimes extends Component
                 
                 return (
                     <View style={styles.NYTimes}>
-                        <Text>{title}</Text>
-                        <Text>{published_date}</Text>
-                        <Text>{url}</Text>
+                        <TouchableHighlight onPress={this.deleteWidget.bind(this, this.props.search)}>
+                            <Card containerStyle={{backgroundColor: 'rgb(28, 28, 28)'}}
+                                title="Most Popular Viewed"
+                                titleStyle={{color: 'rgb(255, 255, 255)'}}>
+                                <Text style={styles.Content}>From {this.props.search} days{'\n'}</Text>
+                                <Text style={styles.Content}>{title}</Text>
+                                <Text style={styles.Content}>{published_date}</Text>
+                                <Text style={styles.Content}>{url}</Text>
+                            </Card>
+                        </TouchableHighlight>
                     </View>
                 )
             }
@@ -139,9 +165,15 @@ export default class NYTimes extends Component
                 
                 return (
                     <View style={styles.NYTimes}>
-                        <Text>{title}</Text>
-                        <Text>{published_date}</Text>
-                        <Text>{url}</Text>
+                        <TouchableHighlight onPress={this.deleteWidget.bind(this, this.props.search)}>
+                            <Card containerStyle={{backgroundColor: 'rgb(28, 28, 28)'}}
+                                title="Top Stories"
+                                titleStyle={{color: 'rgb(255, 255, 255)'}}>
+                                <Text style={styles.Content}>{title}</Text>
+                                <Text style={styles.Content}>{published_date}</Text>
+                                <Text style={styles.Content}>{url}</Text>
+                            </Card>
+                        </TouchableHighlight>
                     </View>
                 )
             }
@@ -154,9 +186,9 @@ export default class NYTimes extends Component
                 
                 return (
                     <View style={styles.NYTimes}>
-                        <Text>{headline}</Text>
-                        <Text>{snippet}</Text>
-                        <Text>{published_date}</Text>
+                        <Text style={styles.Content}>{headline}</Text>
+                        <Text style={styles.Content}>{snippet}</Text>
+                        <Text style={styles.Content}>{published_date}</Text>
                         <Text>{url}</Text>
                     </View>
                 )
@@ -170,9 +202,9 @@ export default class NYTimes extends Component
                 
                 return (
                     <View style={styles.NYTimes}>
-                        <Text>{book_title}</Text>
-                        <Text>{book_author}</Text>
-                        <Text>{published_date}</Text>
+                        <Text style={styles.Content}>{book_title}</Text>
+                        <Text style={styles.Content}>{book_author}</Text>
+                        <Text style={styles.Content}>{published_date}</Text>
                         <Text>{url}</Text>
                     </View>
                 )
@@ -186,5 +218,9 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    Content : {
+      color: 'rgb(255, 255, 255)',
+      textAlign: "center",
     }
 });

@@ -21,7 +21,8 @@ export default class WeatherS extends Component
             dataSource: null,
             isLoading: true,
             new_name: '',
-            refresh: 1
+            refresh: 1,
+            timeout: 3000,
         }
     }
 
@@ -36,6 +37,7 @@ export default class WeatherS extends Component
             dataSource: response,
             isLoading: false,
         })
+        //this.Timer();
         return response;
     }
 
@@ -57,12 +59,19 @@ export default class WeatherS extends Component
         return (response);
     }
 
+    Timer() {
+        const time = setTimeout(() => {
+            this.forceRefresh();
+        }, this.state.timeout);
+    }
+
     async componentDidMount() {
         let response = await this.getUserWidgets();
         this.setState({
             dataSource: response,
             isLoading: false,
         })
+        //this.Timer();
         return 0
     }
 
@@ -70,7 +79,7 @@ export default class WeatherS extends Component
     render()  {
         if (this.state.isLoading) {
             return (
-                <View style={styles.Weather}>
+                <View style={styles.HomePage}>
                     <Text>Loading</Text>            
                 </View>
             )
