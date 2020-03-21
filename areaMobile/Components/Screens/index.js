@@ -7,8 +7,8 @@ import ProfilePage from '../../Scenes/ProfilePage';
 import WeatherS from '../../Scenes/Services/WeatherS';
 import ExchangeS from '../../Scenes/Services/ExchangeS';
 import NYTimesS from '../../Scenes/Services/NYTimesS';
-import SportS from '../../Scenes/Services/SportS';
-import BourseS from '../../Scenes/Services/BourseS';
+import CoronaS from '../../Scenes/Services/CoronaS';
+import StockS from '../../Scenes/Services/StockS';
 import FAQ from '../../Scenes/FAQ';
 
 export const ProfileScreen = () => <ProfilePage />;
@@ -19,5 +19,5 @@ export const ServicesScreen = () => <AllServices />;
 export const WeatherScreen = () => <WeatherS />;
 export const ExchangeScreen = () => <ExchangeS />;
 export const NYTimesScreen = () => <NYTimesS />;
-export const SportScreen = () => <SportS />;
-export const BourseScreen = () => <BourseS />;
+export const CoronaScreen = () => <CoronaS />;
+export const BourseScreen = () => <StockS />;

@@ -30,8 +30,8 @@ export default class AllServices extends Component
         logo: 'https://pbs.twimg.com/profile_images/1098244578472280064/gjkVMelR_400x400.png',
       },
       {
-        name: 'Sport',
-        scene: 'Sport',
+        name: 'Corona Virus',
+        scene: 'Corona',
         info: 'You can see or search New York Times articles. You can read a resume of the wanted article.',
         logo: 'https://pbs.twimg.com/profile_images/1098244578472280064/gjkVMelR_400x400.png',
       },

@@ -10,7 +10,7 @@ import AuthPage from './Scenes/AuthPage';
 import AllServices from './Scenes/AllServices';
 
 import { HomeScreen, ProfileScreen, FAQScreen, ServicesScreen, WeatherScreen,
-         ExchangeScreen, NYTimesScreen, SportScreen, BourseScreen } from './Components/Screens';
+         ExchangeScreen, NYTimesScreen, CoronaScreen, BourseScreen } from './Components/Screens';
 
 const NavStackNavigator = createBottomTabNavigator (
   {
@@ -95,8 +95,8 @@ const AppStackNavigator = createStackNavigator (
         headerShown: true
       }
     },
-    Sport: {
-      screen: SportScreen,
+    Corona: {
+      screen: CoronaScreen,
       navigationOptions: {
         headerShown: true
       }

@@ -4,8 +4,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import Weather from '../../Components/WeatherWidget';
 
-import {getWidgets} from '../../api/GetWidget';
-import {deleteWidget} from '../../api/DelWidget';
+import { getWidgets } from '../../api/GetWidget';
+import { getNotification } from '../../api/GetNotification';
 import { postWidget } from '../../api/PostWidget';
 
 const { width: WIDTH } = Dimensions.get('window')
@@ -20,9 +20,12 @@ export default class WeatherS extends Component
             widget_nbr: 0,
             dataSource: null,
             isLoading: true,
+            notifications : [''],
             new_name: '',
+            new_temp: '',
+            new_check: '',
             refresh: 1,
-            timeout: 3000,
+            timeout: 10000,
         }
     }
 
@@ -37,12 +40,12 @@ export default class WeatherS extends Component
             dataSource: response,
             isLoading: false,
         })
-        //this.Timer();
+        this.Timer();
         return response;
     }
 
     async addWidget() {
-        let response = await postWidget(this.state.service, this.state.new_name);
+        let response = await postWidget(this.state.service, this.state.new_name, '', this.state.new_temp, this.state.new_check);
         this.forceRefresh();
         return (response);
     }
@@ -67,11 +70,13 @@ export default class WeatherS extends Component
 
     async componentDidMount() {
         let response = await this.getUserWidgets();
+        let result = await getNotification();
         this.setState({
             dataSource: response,
             isLoading: false,
+            notifications: result,
         })
-        //this.Timer();
+        this.Timer();
         return 0
     }
 
@@ -92,6 +97,13 @@ export default class WeatherS extends Component
                                 <Weather name={widget.name} key={index}/>
                             )
                         })}
+                        {this.state.notifications.map((notif, index) => {
+                            if ((notif.match(/Meteo/g) || []).length > 0) {
+                                return (
+                                    <Text key={index}>{notif}</Text>
+                                )
+                            }
+                        })}
                     </View>
                     <View style={styles.add}>
                         <View>
@@ -103,6 +115,24 @@ export default class WeatherS extends Component
                               ref= {(el) => { this.name = el; }}
                                 onChangeText={(name) => this.setState({new_name: name})}
                                 value={this.state.new_name}
+                            />
+                            <TextInput
+                              style={styles.input}
+                              placeholder={'Temperature'}
+                              placeholderTextColor={'white'}
+                              underLineColorAndroid='tranparent'
+                              ref= {(el) => { this.temp = el; }}
+                                onChangeText={(temp) => this.setState({new_temp: temp})}
+                                value={this.state.new_temp}
+                            />
+                            <TextInput
+                              style={styles.input}
+                              placeholder={'lower / greater'}
+                              placeholderTextColor={'white'}
+                              underLineColorAndroid='tranparent'
+                              ref= {(el) => { this.check = el; }}
+                                onChangeText={(check) => this.setState({new_check: check})}
+                                value={this.state.new_check}
                             />
                         </View>
                         <View style={styles.btn}>

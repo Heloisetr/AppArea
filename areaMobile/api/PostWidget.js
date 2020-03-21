@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API } from './Config.js';
 import { AsyncStorage } from 'react-native'
 
-async function postWidget(service, widget, desc) {
+async function postWidget(service, widget, desc, value, compare) {
 
   let description = '';
 
@@ -16,7 +16,9 @@ async function postWidget(service, widget, desc) {
       url: `${API}/widgets/${service}/${widget.toLowerCase()}`,
       data: {
         params: {
-          description: description
+          description: description,
+          value: value,
+          compare: compare,
         }
       },
       headers: {

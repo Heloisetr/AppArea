@@ -1,19 +1,30 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Weather from '../Components/WeatherWidget'
-import NYTImes from '../Components/NYTimes';
-import Exchange from '../Components/ExchangeWidget';
-import Sport from '../Components/Sport';
-import Services from '../Components/Services/Services';
+import { StyleSheet, Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
+
+import Corona from '../Components/CoronaWidget';
 
 export default class HomePage extends Component
 {
+    constructor(props) {
+        super(props);
+        this.state = {
+            language: '',
+            modalVisible: false,
+        }
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+      }
+
     render()  {
         return (
             <View style={styles.HomePage}>
-                <Text>Homepage</Text>
-                    <NYTImes/>
+                <View>
+                    <Text>Homepage</Text>
+                    <Corona name='China'/>
                 </View>
+            </View>
         )   
     }
 }
@@ -21,7 +32,8 @@ export default class HomePage extends Component
 const styles = StyleSheet.create({
     HomePage: {
       flex: 1,
-      alignItems: 'center',
+      backgroundColor: "#303030",
+      //flexDirection: 'row',
       //justifyContent: 'center',
     }
 });
