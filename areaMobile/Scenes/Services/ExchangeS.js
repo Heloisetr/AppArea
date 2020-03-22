@@ -95,60 +95,112 @@ export default class ExchangeS extends Component
                 </View>
             )
         } else {
-            return (
-                <View style={styles.HomePage} key={this.state.refresh}>
-                    <View style={styles.container}>
-                        {this.state.dataSource.data.map((widget, index) => {
-                            return (
-                                <Exchange name={widget.name} base={widget.params.description.base} comp={widget.params.description.wanted} key={index}/>
-                            )
-                        })}
-                    </View>
-                    <View style={styles.add}>
-                        <View style={styles.inputcont}>
-                            <View style={{alignItems: "center"}}>
-                                <Picker
-                                    style={{width: 200}}
-                                    selectedValue={this.state.new_type}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                      this.setState({new_type: itemValue})
-                                    }>
-                                    <Picker.Item label="Compare" value="compare" />
-                                    <Picker.Item label="Latest" value="latest" />
-                                    <Picker.Item label="Day" value="day" />
-                                </Picker>
+            if (this.state.dataSource == undefined) {
+                return (
+                    <View style={styles.HomePage} key={this.state.refresh}>
+                        <View style={styles.container}>
+                        </View>
+                        <View style={styles.add}>
+                            <View style={styles.inputcont}>
+                                <View style={{alignItems: "center"}}>
+                                    <Picker
+                                        style={{width: 200}}
+                                        selectedValue={this.state.new_type}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                          this.setState({new_type: itemValue})
+                                        }>
+                                        <Picker.Item label="Compare" value="compare" />
+                                        <Picker.Item label="Latest" value="latest" />
+                                        <Picker.Item label="Day" value="day" />
+                                    </Picker>
+                                </View>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Date (format : yyyy-mm-dd)'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.date = el; }}
+                                        onChangeText={(date) => this.setState({new_date: date, new_date_cpy: date})}
+                                        value={this.state.new_date_cpy}
+                                    />
+                                </View>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Currency (ex : EUR / CNY / JPY)'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.curr = el; }}
+                                        onChangeText={(curr) => this.setState({new_curr: curr, new_curr_cpy: curr})}
+                                        value={this.state.new_curr_cpy}
+                                    />
+                                </View>
                             </View>
-                            <View>
-                                <TextInput
-                                  style={styles.input}
-                                  placeholder={'Date (format : yyyy-mm-dd)'}
-                                  placeholderTextColor={'white'}
-                                  underLineColorAndroid='tranparent'
-                                  ref= {(el) => { this.date = el; }}
-                                    onChangeText={(date) => this.setState({new_date: date, new_date_cpy: date})}
-                                    value={this.state.new_date_cpy}
-                                />
-                            </View>
-                            <View>
-                                <TextInput
-                                  style={styles.input}
-                                  placeholder={'Currency (ex : EUR / CNY / JPY)'}
-                                  placeholderTextColor={'white'}
-                                  underLineColorAndroid='tranparent'
-                                  ref= {(el) => { this.curr = el; }}
-                                    onChangeText={(curr) => this.setState({new_curr: curr, new_curr_cpy: curr})}
-                                    value={this.state.new_curr_cpy}
-                                />
+                            <View style={styles.btn}>
+                                <TouchableHighlight onPress={this.addWidget.bind(this)}>
+                                    <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
+                                </TouchableHighlight>
                             </View>
                         </View>
-                        <View style={styles.btn}>
-                            <TouchableHighlight onPress={this.addWidget.bind(this)}>
-                                <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
-                            </TouchableHighlight>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.HomePage} key={this.state.refresh}>
+                        <View style={styles.container}>
+                            {this.state.dataSource.data.map((widget, index) => {
+                                return (
+                                    <Exchange name={widget.name} base={widget.params.description.base} comp={widget.params.description.wanted} key={index}/>
+                                )
+                            })}
+                        </View>
+                        <View style={styles.add}>
+                            <View style={styles.inputcont}>
+                                <View style={{alignItems: "center"}}>
+                                    <Picker
+                                        style={{width: 200}}
+                                        selectedValue={this.state.new_type}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                          this.setState({new_type: itemValue})
+                                        }>
+                                        <Picker.Item label="Compare" value="compare" />
+                                        <Picker.Item label="Latest" value="latest" />
+                                        <Picker.Item label="Day" value="day" />
+                                    </Picker>
+                                </View>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Date (format : yyyy-mm-dd)'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.date = el; }}
+                                        onChangeText={(date) => this.setState({new_date: date, new_date_cpy: date})}
+                                        value={this.state.new_date_cpy}
+                                    />
+                                </View>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Currency (ex : EUR / CNY / JPY)'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.curr = el; }}
+                                        onChangeText={(curr) => this.setState({new_curr: curr, new_curr_cpy: curr})}
+                                        value={this.state.new_curr_cpy}
+                                    />
+                                </View>
+                            </View>
+                            <View style={styles.btn}>
+                                <TouchableHighlight onPress={this.addWidget.bind(this)}>
+                                    <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
+                                </TouchableHighlight>
+                            </View>
                         </View>
                     </View>
-                </View>
-            )
+                )
+            }
         }
     }
 }

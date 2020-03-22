@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight, Dimensions, Pick
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import { getWidgets } from '../../api/GetWidget';
-import { getNotification } from '../../api/GetNotification';
 import { postWidget } from '../../api/PostWidget';
 import Corona from '../../Components/CoronaWidget';
 
@@ -29,7 +28,8 @@ export default class CoronaS extends Component
             notifications: [''],
             newcountry: 'France',
             new_value: '',
-            refresh: 1
+            refresh: 1,
+            timeout: 30000,
         }
     }
 
@@ -43,7 +43,8 @@ export default class CoronaS extends Component
         this.setState({
             refresh: this.state.refresh + 1,
             isLoading: true,
-            newstock: 'France',
+            newcountry: 'France',
+            new_value: '',
         })
         let response = await this.getUserWidgets();
         if (response === undefined) {
@@ -56,6 +57,8 @@ export default class CoronaS extends Component
                 isLoading: false,
             })
         }
+        this.Timer();
+        return response;
     }
 
     async getUserWidgets() {
@@ -70,14 +73,19 @@ export default class CoronaS extends Component
         return (response);
     }
 
+    Timer() {
+        const time = setTimeout(() => {
+            this.forceRefresh();
+        }, this.state.timeout);
+    }
+
     async componentDidMount() {
         let response = await this.getUserWidgets();
-        let result = await getNotification();
         this.setState({
             dataSource: response,
             isLoading: false,
-            notifications: result,
         })
+        this.Timer();
         return 0
     }
 
@@ -96,13 +104,6 @@ export default class CoronaS extends Component
                             return (
                                 <Corona name={widget.name} key={index}/>
                             )
-                        })}
-                        {this.state.notifications.map((notif, index) => {
-                            if ((notif.match(/protéger/g) || []).length > 0) {
-                                return (
-                                    <Text key={index}>{notif}</Text>
-                                )
-                            }
                         })}
                     </View>
                     <View style={styles.add}>

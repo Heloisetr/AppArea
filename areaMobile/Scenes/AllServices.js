@@ -78,7 +78,7 @@ export default class AllServices extends Component
                           }}
                         >
                             <TouchableOpacity
-                              onPress={() => console.log('right button clicked ' + service.name)}
+                              onPress={() => this.props.navigation.navigate('Notification')}
                             >
                               <FontAwesome5 name="bell"x size={40} color="#ffffff" />
                             </TouchableOpacity>

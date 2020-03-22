@@ -3,10 +3,8 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight, Dimensions, Pick
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import {getWidgets} from '../../api/GetWidget';
-import {deleteWidget} from '../../api/DelWidget';
 import { postWidget } from '../../api/PostWidget';
 import Stock from '../../Components/StockWidget';
-import { getNotifications } from '../../api/GetNotification';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -24,7 +22,8 @@ export default class StockS extends Component
             newstock: 'MSFT',
             new_value: '',
             new_check: '',
-            refresh: 1
+            refresh: 1,
+            timeout: 30000,
         }
     }
 
@@ -39,17 +38,20 @@ export default class StockS extends Component
             refresh: this.state.refresh + 1,
             isLoading: true,
             newstock: 'MSFT',
+            new_check: '',
+            new_value: '',
         })
         let response = await this.getUserWidgets();
         this.setState({
             dataSource: response,
             isLoading: false,
         })
+        this.Timer();
+        return response;
     }
 
     async getUserWidgets() {
         let response = await getWidgets(this.state.service);
-        //console.log(response.data);
 
         if (response !== undefined) {
             this.setState({
@@ -59,14 +61,19 @@ export default class StockS extends Component
         return (response);
     }
 
+    Timer() {
+        const time = setTimeout(() => {
+            this.forceRefresh();
+        }, this.state.timeout);
+    }
+
     async componentDidMount() {
         let response = await this.getUserWidgets();
-        let result = await getNotifications();
         this.setState({
             dataSource: response,
             isLoading: false,
-            notifications: result,
         })
+        this.Timer();
         return 0
     }
 
@@ -78,62 +85,102 @@ export default class StockS extends Component
                 </View>
             )
         } else {
-            return (
-                <View style={styles.HomePage} key={this.state.refresh}>
-                    <View style={styles.container}>
-                        {this.state.dataSource.data.map((widget, index) => {
-                            return (
-                                <Stock name={widget.name} key={index}/>
-                            )
-                        })}
-                        {this.state.notifications.map((notif, index) => {
-                            if ((notif.match(/Trading/g) || []).length > 0) {
-                                return (
-                                    <Text key={index}>{notif}</Text>
-                                )
-                            }
-                        })}
-                    </View>
-                    <View style={styles.add}>
-                        <View style={styles.inputcont}>
-                            <View>
-                                <TextInput
-                                  style={styles.input}
-                                  placeholder={'Enterprise'}
-                                  placeholderTextColor={'white'}
-                                  underLineColorAndroid='tranparent'
-                                  ref= {(el) => { this.stock = el; }}
-                                    onChangeText={(stock) => this.setState({newstock: stock})}
-                                    value={this.state.newstock}
-                                />
-                                <TextInput
-                                  style={styles.input}
-                                  placeholder={'Stock check'}
-                                  placeholderTextColor={'white'}
-                                  underLineColorAndroid='tranparent'
-                                  ref= {(el) => { this.price = el; }}
-                                    onChangeText={(price) => this.setState({new_value: price})}
-                                    value={this.state.new_value}
-                                />
-                                <TextInput
-                                  style={styles.input}
-                                  placeholder={'lower / greater'}
-                                  placeholderTextColor={'white'}
-                                  underLineColorAndroid='tranparent'
-                                  ref= {(el) => { this.check = el; }}
-                                    onChangeText={(check) => this.setState({new_check: check})}
-                                    value={this.state.new_check}
-                                />
+            if (this.state.dataSource.data == []) {
+                return (
+                    <View style={styles.HomePage} key={this.state.refresh}>
+                        <View style={styles.container}>
+                        </View>
+                        <View style={styles.add}>
+                            <View style={styles.inputcont}>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Enterprise'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.stock = el; }}
+                                        onChangeText={(stock) => this.setState({newstock: stock})}
+                                        value={this.state.newstock}
+                                    />
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Stock check'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.price = el; }}
+                                        onChangeText={(price) => this.setState({new_value: price})}
+                                        value={this.state.new_value}
+                                    />
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'lower / greater'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.check = el; }}
+                                        onChangeText={(check) => this.setState({new_check: check})}
+                                        value={this.state.new_check}
+                                    />
+                                </View>
+                            </View>
+                            <View style={styles.btn}>
+                                <TouchableHighlight onPress={this.addWidget.bind(this)}>
+                                    <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
+                                </TouchableHighlight>
                             </View>
                         </View>
-                        <View style={styles.btn}>
-                            <TouchableHighlight onPress={this.addWidget.bind(this)}>
-                                <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
-                            </TouchableHighlight>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.HomePage} key={this.state.refresh}>
+                        <View style={styles.container}>
+                            {this.state.dataSource.data.map((widget, index) => {
+                                return (
+                                    <Stock name={widget.name} key={index}/>
+                                )
+                            })}
+                        </View>
+                        <View style={styles.add}>
+                            <View style={styles.inputcont}>
+                                <View>
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Enterprise'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.stock = el; }}
+                                        onChangeText={(stock) => this.setState({newstock: stock})}
+                                        value={this.state.newstock}
+                                    />
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'Stock check'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.price = el; }}
+                                        onChangeText={(price) => this.setState({new_value: price})}
+                                        value={this.state.new_value}
+                                    />
+                                    <TextInput
+                                      style={styles.input}
+                                      placeholder={'lower / greater'}
+                                      placeholderTextColor={'white'}
+                                      underLineColorAndroid='tranparent'
+                                      ref= {(el) => { this.check = el; }}
+                                        onChangeText={(check) => this.setState({new_check: check})}
+                                        value={this.state.new_check}
+                                    />
+                                </View>
+                            </View>
+                            <View style={styles.btn}>
+                                <TouchableHighlight onPress={this.addWidget.bind(this)}>
+                                    <FontAwesome5 name="plus-circle" size={24} color="#CDCCCE" />
+                                </TouchableHighlight>
+                            </View>
                         </View>
                     </View>
-                </View>
-            )
+                )
+            }
         }
     }
 }

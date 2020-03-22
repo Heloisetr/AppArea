@@ -10,6 +10,7 @@ import NYTimesS from '../../Scenes/Services/NYTimesS';
 import CoronaS from '../../Scenes/Services/CoronaS';
 import StockS from '../../Scenes/Services/StockS';
 import FAQ from '../../Scenes/FAQ';
+import Notification from '../../Scenes/Services/Notification';
 
 export const ProfileScreen = () => <ProfilePage />;
 export const HomeScreen = () => <HomePage />;
@@ -21,3 +22,4 @@ export const ExchangeScreen = () => <ExchangeS />;
 export const NYTimesScreen = () => <NYTimesS />;
 export const CoronaScreen = () => <CoronaS />;
 export const BourseScreen = () => <StockS />;
+export const NotificationScreen = () => <Notification />;

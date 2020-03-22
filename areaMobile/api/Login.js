@@ -9,12 +9,17 @@ async function postLogin(email, password) {
     }
 
     try {
-        const result = await axios.post(`${API}/users/auth`, {
-            email: email,
-            password: password,
-          }, 
-          {headers: headers}
-        );
+        const result = await axios({
+            method: 'post',
+            url: `${API}/users/auth`,
+            data: {
+                email: email,
+                password: password,
+            },
+            headers: {
+                headers
+            }
+        })
 
         if (result.status === 200) {
             return result

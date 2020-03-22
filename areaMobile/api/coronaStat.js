@@ -1,7 +1,7 @@
 export const allCountriesCases = {
     "countries_stat": [
         {
-            "country_name": "China",
+            "country_name": "china",
             "cases": "80,739",
             "deaths": "3,120",
             "region": "5,111",

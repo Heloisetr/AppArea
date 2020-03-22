@@ -32,6 +32,7 @@ export default class Corona extends Component
             if (country.country_name == name) {
                 this.setState({
                     dataSource: country,
+                    isLoading: false,
                 })
             }
         })

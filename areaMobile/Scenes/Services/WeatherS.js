@@ -5,7 +5,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Weather from '../../Components/WeatherWidget';
 
 import { getWidgets } from '../../api/GetWidget';
-import { getNotification } from '../../api/GetNotification';
+import { getNotifications } from '../../api/GetNotification';
 import { postWidget } from '../../api/PostWidget';
 
 const { width: WIDTH } = Dimensions.get('window')
@@ -25,7 +25,7 @@ export default class WeatherS extends Component
             new_temp: '',
             new_check: '',
             refresh: 1,
-            timeout: 10000,
+            timeout: 30000,
         }
     }
 
@@ -34,6 +34,8 @@ export default class WeatherS extends Component
             refresh: this.state.refresh + 1,
             isLoading: true,
             new_name: '',
+            new_temp: '',
+            new_check: ''
         })
         let response = await this.getUserWidgets();
         this.setState({
@@ -70,11 +72,9 @@ export default class WeatherS extends Component
 
     async componentDidMount() {
         let response = await this.getUserWidgets();
-        let result = await getNotification();
         this.setState({
             dataSource: response,
             isLoading: false,
-            notifications: result,
         })
         this.Timer();
         return 0
@@ -96,13 +96,6 @@ export default class WeatherS extends Component
                             return (
                                 <Weather name={widget.name} key={index}/>
                             )
-                        })}
-                        {this.state.notifications.map((notif, index) => {
-                            if ((notif.match(/Meteo/g) || []).length > 0) {
-                                return (
-                                    <Text key={index}>{notif}</Text>
-                                )
-                            }
                         })}
                     </View>
                     <View style={styles.add}>
